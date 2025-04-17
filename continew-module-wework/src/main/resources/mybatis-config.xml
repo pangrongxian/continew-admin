@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 开启驼峰命名转换 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 开启二级缓存 -->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+    <typeAliases>
+        <package name="top.continew.admin.wework.model.entity"/>
+    </typeAliases>
+    <mappers>
+        <mapper resource="mapper/ApprovalTemplateMapper.xml"/>
+        <mapper resource="mapper/ApprovalApplyMapper.xml"/>
+        <mapper resource="mapper/ApprovalRecordMapper.xml"/>
+    </mappers>
+</configuration>

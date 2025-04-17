@@ -72,7 +72,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-    </dependencies>
+    
+        <!-- 企业微信模块 -->
+        <dependency>
+            <groupId>top.continew</groupId>
+            <artifactId>continew-module-wework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+</dependencies>
 
     <build>
         <!-- 设置构建的 jar 包名 -->

@@ -1,0 +1,17 @@
+# 企业微信配置
+wework:
+  # 企业ID
+  corp-id: ww0b24d99e521458b4
+  # 应用ID
+  agent-id: 1000009
+  # 应用密钥
+  secret: vDGZLHGo6YI083OBaccM1UU_65JH66t1jCrELiXfOvU
+  # 回调token
+  token: token123
+  # 回调消息加密密钥
+  encoding-aes-key: abcdefghijklmnopqrstuvwxyz0123456789ABCDEFG
+  # 回调域名
+  callback-domain: https://example.com
+
+  
+  

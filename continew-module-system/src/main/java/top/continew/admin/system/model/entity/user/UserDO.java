@@ -41,6 +41,11 @@ import java.time.LocalDateTime;
 @TableName("sys_user")
 public class UserDO extends BaseDO {
 
+    /**
+     * 企业微信用户ID
+     */
+    // private String weWorkUserId;
+
     @Serial
     private static final long serialVersionUID = 1L;
 

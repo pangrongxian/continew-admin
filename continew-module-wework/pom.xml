@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>top.continew</groupId>
+        <artifactId>continew-admin</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>continew-module-wework</artifactId>
+    <description>企业微信模块</description>
+
+    <dependencies>
+        <!-- 公共模块 -->
+        <dependency>
+            <groupId>top.continew</groupId>
+            <artifactId>continew-common</artifactId>
+        </dependency>
+        
+        <!-- 系统模块 -->
+        <dependency>
+            <groupId>top.continew</groupId>
+            <artifactId>continew-module-system</artifactId>
+        </dependency>
+
+        <!-- HTTP客户端 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-http</artifactId>
+        </dependency>
+        
+        <!-- JetCache缓存 -->
+        <dependency>
+            <groupId>com.alicp.jetcache</groupId>
+            <artifactId>jetcache-starter-redis</artifactId>
+        </dependency>
+        
+        <!-- 其他依赖 -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.70</version>
+        </dependency>
+    </dependencies>
+</project>

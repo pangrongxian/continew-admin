@@ -24,11 +24,12 @@
     <url>https://github.com/continew-org/continew-admin</url>
 
     <modules>
-        <module>continew-webapi</module>
+        <module>continew-common</module>
+        <module>continew-framework</module>
         <module>continew-module-system</module>
         <module>continew-plugin</module>
-        <module>continew-common</module>
-        <module>continew-extension</module>
+        <module>continew-module-wework</module>
+        <module>continew-webapi</module>
     </modules>
 
     <properties>

@@ -11,6 +11,11 @@ databaseChangeLog:
       file: db/changelog/mysql/plugin/plugin_open.sql
   - include:
       file: db/changelog/mysql/plugin/plugin_generator.sql
+  
+  # 企业微信模块表结构
+  - include:
+      file: db/changelog/mysql/wework_tables.sql
+      relativeToChangelogFile: false
 # PostgreSQL
 #  - include:
 #      file: db/changelog/postgresql/main_table.sql
