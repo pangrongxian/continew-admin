@@ -2,58 +2,57 @@ package top.continew.admin.wework.service.impl;
 
 import cn.hutool.json.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.continew.admin.common.context.UserContextHolder;
+import top.continew.starter.core.exception.BusinessException;
 import top.continew.admin.wework.mapper.ApprovalApplyMapper;
 import top.continew.admin.wework.model.entity.ApprovalApplyDO;
 import top.continew.admin.wework.model.req.ApprovalApplyReq;
-import top.continew.admin.wework.model.resp.ApprovalApplyResp;
 import top.continew.admin.wework.model.resp.ApprovalDetailResp;
 import top.continew.admin.wework.service.ApprovalService;
-import top.continew.admin.wework.service.WeWorkUserService;
 import top.continew.admin.wework.util.WeWorkClient;
+import cn.hutool.json.JSONUtil;
 
-import java.util.List;
-
+/**
+ * 审批服务实现
+ *
+ * @author Charles7c
+ * @since 2023/1/1 00:00
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ApprovalServiceImpl implements ApprovalService {
 
     private final WeWorkClient weWorkClient;
-    private final WeWorkUserService weWorkUserService;
     private final ApprovalApplyMapper applyMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String createApproval(ApprovalApplyReq req) {
-        // 获取当前用户
-        Long userId = UserContextHolder.getUserId();
-        String username = UserContextHolder.getUsername();
-        
-        // 获取审批人的企业微信用户ID
-        List<String> approverUserIds = weWorkUserService.getWeWorkUserIds(req.getApprovers());
-        
-        // 提交审批申请
-        String spNo = weWorkClient.applyApproval(req, approverUserIds);
-        
-        // 保存审批记录
-        // 保存审批记录时使用上下文中的用户名
-        ApprovalApplyDO apply = new ApprovalApplyDO();
-        apply.setSpNo(spNo);
-        apply.setTemplateId(req.getTemplateId());
-        apply.setTitle(req.getTitle());
-        apply.setCreatorId(userId);
-        apply.setCreatorName(username);  // 使用上下文中的用户名
-        apply.setStatus(0); // 待审批
-        apply.setFormData(req.getFormData().toString());
-        
-        applyMapper.insert(apply);
-        return spNo;
+        try {
+            // 调用企业微信API提交审批申请
+            String spNo = weWorkClient.applyApproval(req);
+            
+            // 保存审批申请记录到数据库
+            ApprovalApplyDO apply = new ApprovalApplyDO();
+            apply.setSpNo(spNo);
+            apply.setTitle(req.getTitle());
+            apply.setTemplateId(req.getTemplateId());
+            apply.setCreatorUserid(req.getCreatorUserid());
+            apply.setCreatorName(req.getCreatorName());
+            apply.setStatus(1);
+            apply.setApplyData(JSONUtil.toJsonStr(req.getApplyData()));
+            apply.setProcess(JSONUtil.toJsonStr(req.getProcess()));
+            applyMapper.insert(apply);
+            
+            return spNo;
+        } catch (Exception e) {
+            log.error("创建审批申请失败", e);
+            throw new BusinessException("创建审批申请失败: " + e.getMessage());
+        }
     }
 
     @Override
@@ -80,22 +79,18 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void handleStatusChange(String spNo, Integer status) {
-        ApprovalApplyDO apply = new ApprovalApplyDO();
-        apply.setStatus(status);
-        applyMapper.update(apply, 
+        // 更新本地审批状态
+        ApprovalApplyDO apply = applyMapper.selectOne(
             new LambdaQueryWrapper<ApprovalApplyDO>()
                 .eq(ApprovalApplyDO::getSpNo, spNo)
         );
-    }
-
-    private ApprovalApplyResp convertToResp(ApprovalApplyDO apply) {
-        ApprovalApplyResp resp = new ApprovalApplyResp();
-        resp.setId(apply.getId());
-        resp.setSpNo(apply.getSpNo());
-        resp.setTitle(apply.getTitle());
-        resp.setStatus(apply.getStatus());
-        resp.setCreatorName(apply.getCreatorName());
-        resp.setCreateTime(apply.getCreateTime());
-        return resp;
+        
+        if (apply != null) {
+            apply.setStatus(status);
+            applyMapper.updateById(apply);
+            log.info("审批状态已更新: spNo={}, status={}", spNo, status);
+        } else {
+            log.warn("未找到对应的审批申请记录: spNo={}", spNo);
+        }
     }
 }

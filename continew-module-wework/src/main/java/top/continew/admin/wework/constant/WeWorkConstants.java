@@ -78,4 +78,9 @@ public interface WeWorkConstants {
      * 获取审批模板列表URL
      */
     String GET_TEMPLATE_LIST_URL = API_BASE_URL + "/cgi-bin/oa/gettemplatelistbygroup?access_token=%s";
+
+    /**
+     * 获取部门成员列表URL
+     */
+    String GET_DEPARTMENT_USERS_URL = API_BASE_URL + "/cgi-bin/user/simplelist?access_token=%s&department_id=%d&fetch_child=%d";
 }

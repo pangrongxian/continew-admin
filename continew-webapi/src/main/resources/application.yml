@@ -13,5 +13,18 @@ wework:
   # 回调域名
   callback-domain: https://example.com
 
+
+# 添加以下配置
+cosid:
+  namespace: continew-admin
+  machine:
+    enabled: true
+    machine-bit: 10
+    instance-id: ${spring.application.name}
+  snowflake:
+    enabled: true
+    share:
+      enabled: true
+
   
   

@@ -18,7 +18,6 @@ package top.continew.admin.wework.model.req;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -44,27 +43,101 @@ public class ApprovalApplyReq implements Serializable {
      * 模板ID
      */
     @NotBlank(message = "模板ID不能为空")
-    @Schema(description = "模板ID", example = "3TkZDXxUY9yQMmFhpAAiDMuLvfnia")
+    @Schema(description = "模板ID", example = "3TkZDXxUY9yQMmFhpAAiDMuLvfnia", required = true)
     private String templateId;
 
     /**
      * 申请标题
      */
-    @NotBlank(message = "申请标题不能为空")
-    @Schema(description = "申请标题", example = "请假申请")
+    @Schema(description = "申请标题", example = "用车申请")
     private String title;
 
     /**
-     * 审批人ID列表
+     * 申请人userid
      */
-    @NotEmpty(message = "审批人不能为空")
-    @Schema(description = "审批人ID列表")
-    private List<Long> approvers;
+    @Schema(description = "申请人userid")
+    private String creatorUserid;
+
+    /**
+     * 申请人姓名
+     */
+    @Schema(description = "申请人姓名")
+    private String creatorName;
+
+    /**
+     * 审批流程信息，当use_template_approver为0时生效
+     */
+    @Schema(description = "审批流程信息")
+    private ProcessInfo process;
+
+    /**
+     * 部门id
+     */
+    @Schema(description = "提单者提单部门id")
+    private Integer chooseDepartment;
 
     /**
      * 表单数据
      */
     @NotNull(message = "表单数据不能为空")
+    @Schema(description = "表单数据", required = true)
+    private ApplyData applyData;
+
+    /**
+     * 摘要信息
+     */
+    @Schema(description = "摘要信息")
+    private List<SummaryItem> summaryList;
+
+    @Data
+    @Schema(description = "审批流程信息")
+    public static class ProcessInfo {
+        private List<NodeInfo> node_list;
+    }
+
+    @Data
+    @Schema(description = "审批节点信息")
+    public static class NodeInfo {
+        /**
+         * 节点类型：1-审批节点
+         */
+        private Integer type;
+        
+        /**
+         * 审批方式：1-依次审批，2-会签
+         */
+        private Integer apv_rel;
+        
+        /**
+         * 审批人userid列表
+         */
+        private List<String> userid;
+    }
+
+    @Data
     @Schema(description = "表单数据")
-    private Map<String, Object> formData;
+    public static class ApplyData {
+        private List<FormContent> contents;
+    }
+
+    @Data
+    @Schema(description = "表单内容")
+    public static class FormContent {
+        private String control;
+        private String id;
+        private Map<String, Object> value;
+    }
+
+    @Data
+    @Schema(description = "摘要项")
+    public static class SummaryItem {
+        private List<SummaryInfo> summaryInfo;
+    }
+
+    @Data
+    @Schema(description = "摘要信息")
+    public static class SummaryInfo {
+        private String text;
+        private String lang = "zh_CN";
+    }
 }

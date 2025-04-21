@@ -16,6 +16,10 @@
 
 package top.continew.admin.wework.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import top.continew.admin.wework.model.entity.WeWorkUserDO;
+import top.continew.admin.wework.model.resp.WeWorkUserResp;
+
 import java.util.List;
 
 /**
@@ -24,21 +28,18 @@ import java.util.List;
  * @author Charles7c
  * @since 2023/1/1 00:00
  */
-public interface WeWorkUserService {
+public interface WeWorkUserService extends IService<WeWorkUserDO> {
 
     /**
-     * 获取企业微信用户ID
-     *
-     * @param sysUserId 系统用户ID
-     * @return 企业微信用户ID
+     * 同步企业微信用户数据
      */
-    String getWeWorkUserId(Long sysUserId);
+    void syncUsers();
 
     /**
-     * 获取企业微信用户ID列表
+     * 获取部门下的用户列表
      *
-     * @param sysUserIds 系统用户ID列表
-     * @return 企业微信用户ID列表
+     * @param departmentId 部门ID
+     * @return 用户列表
      */
-    List<String> getWeWorkUserIds(List<Long> sysUserIds);
+    List<WeWorkUserResp> listDepartmentUsers(Long departmentId);
 }

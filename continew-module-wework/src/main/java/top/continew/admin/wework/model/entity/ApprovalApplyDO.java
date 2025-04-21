@@ -1,19 +1,3 @@
-/*
- * Copyright (c) 2022-present Charles7c Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package top.continew.admin.wework.model.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -21,8 +5,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import top.continew.admin.common.model.entity.BaseDO;
-
-import java.time.LocalDateTime;
 
 /**
  * 审批申请
@@ -48,31 +30,32 @@ public class ApprovalApplyDO extends BaseDO {
     /**
      * 申请标题
      */
+    // @TableField("title")
     private String title;
 
     /**
      * 申请人ID
      */
-    private Long creatorId;
+    private String creatorUserid;
 
-    /**
-     * 申请人姓名
+ /**
+     创建人名字
      */
     private String creatorName;
+    
 
     /**
-     * 申请时间
-     */
-    private LocalDateTime applyTime;
-
-    /**
-     * 审批状态
+     * 审批状态：1-审批中，2-已通过，3-已驳回，4-已撤销
      */
     private Integer status;
 
     /**
      * 表单数据JSON
      */
-    @TableField("form_data")
-    private String formData;
+    @TableField("apply_data")
+    private String applyData;
+
+
+    @TableField("process")
+    private String process;
 }

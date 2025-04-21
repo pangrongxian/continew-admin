@@ -64,7 +64,8 @@ public class ApprovalController {
     @Operation(summary = "创建审批申请", description = "创建企业微信审批申请")
     @PostMapping("/apply")
     public R<String> createApproval(@Valid @RequestBody ApprovalApplyReq req) {
-        return R.ok(approvalService.createApproval(req));
+        String spNo = approvalService.createApproval(req);
+        return R.ok(spNo, "提交审批申请成功");
     }
 
     @Operation(summary = "获取审批详情", description = "根据审批单号获取审批详情")

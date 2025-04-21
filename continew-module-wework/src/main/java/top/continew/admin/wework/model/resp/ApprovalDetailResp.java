@@ -18,10 +18,11 @@ package top.continew.admin.wework.model.resp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 审批详情响应信息
@@ -30,16 +31,45 @@ import java.util.List;
  * @since 2023/1/1 00:00
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Schema(description = "审批详情响应信息")
-public class ApprovalDetailResp extends ApprovalApplyResp {
+public class ApprovalDetailResp implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 审批记录列表
+     * 审批单号
      */
-    @Schema(description = "审批记录列表")
-    private List<ApprovalRecordResp> records;
+    @Schema(description = "审批单号", example = "202401010001")
+    private String spNo;
+
+    /**
+     * 申请标题
+     */
+    @Schema(description = "申请标题", example = "请假申请")
+    private String title;
+
+    /**
+     * 审批状态：1-审批中，2-已通过，3-已驳回，4-已撤销
+     */
+    @Schema(description = "审批状态", example = "1")
+    private Integer status;
+
+    /**
+     * 申请人信息
+     */
+    @Schema(description = "申请人信息")
+    private Map<String, Object> applier;
+
+    /**
+     * 审批流程信息
+     */
+    @Schema(description = "审批流程信息")
+    private List<Map<String, Object>> spRecords;
+
+    /**
+     * 表单数据
+     */
+    @Schema(description = "表单数据")
+    private List<Map<String, Object>> formData;
 }
